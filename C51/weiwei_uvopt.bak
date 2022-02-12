@@ -186,10 +186,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>28</ColumnNumber>
+      <ColumnNumber>20</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>4</TopLine>
-      <CurrentLine>4</CurrentLine>
+      <CurrentLine>13</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -241,7 +241,7 @@
   <AlienFiles>
     <PathWithFilename>C:\Users\yuhuahua\Desktop\微微\C51\INC\BLUETOOTH.H</PathWithFilename>
     <TopLine>1</TopLine>
-    <CurrentLine>1</CurrentLine>
+    <CurrentLine>10</CurrentLine>
     <Constant>0</Constant>
     <WindowPosition>
       <length>0</length>
@@ -1609,9 +1609,9 @@
       <Documents>
         <Doc>
           <Name>.\main.c</Name>
-          <ColumnNumber>28</ColumnNumber>
+          <ColumnNumber>20</ColumnNumber>
           <TopLine>4</TopLine>
-          <CurrentLine>4</CurrentLine>
+          <CurrentLine>13</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\inc\bluetooth.c</Name>
@@ -1620,10 +1620,10 @@
           <CurrentLine>1</CurrentLine>
         </Doc>
         <Doc>
-          <Name>C:\Users\yuhuahua\Desktop\微微\C51\INC\BLUETOOTH.H</Name>
+          <Name>.\INC\BLUETOOTH.H</Name>
           <ColumnNumber>16</ColumnNumber>
           <TopLine>1</TopLine>
-          <CurrentLine>1</CurrentLine>
+          <CurrentLine>10</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>
