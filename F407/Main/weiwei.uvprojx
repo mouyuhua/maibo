@@ -498,6 +498,16 @@
               <FileType>1</FileType>
               <FilePath>..\Hardware\Source\pwm.c</FilePath>
             </File>
+            <File>
+              <FileName>oled.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Hardware\Source\oled.c</FilePath>
+            </File>
+            <File>
+              <FileName>myiic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Hardware\Source\myiic.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
