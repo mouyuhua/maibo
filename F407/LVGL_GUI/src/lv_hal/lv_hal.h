@@ -1,5 +1,10 @@
-#ifndef APP_UI_H
-#define APP_UI_H
+/**
+ * @file lv_hal.h
+ *
+ */
+
+#ifndef LV_HAL_H
+#define LV_HAL_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -8,16 +13,9 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#define LV_CONF_INCLUDE_SIMPLE
-#ifdef LV_CONF_INCLUDE_SIMPLE
-#include "lvgl.h"
-#include "lv_ex_conf.h"
-#else
-#include "../../../lvgl/lvgl.h"
-#include "../../../lv_ex_conf.h"
-#endif
-
-#if LV_USE_DEMO
+#include "lv_hal_disp.h"
+#include "lv_hal_indev.h"
+#include "lv_hal_tick.h"
 
 /*********************
  *      DEFINES
@@ -31,19 +29,12 @@ extern "C" {
  * GLOBAL PROTOTYPES
  **********************/
 
-/**
- * Create a demo application
- */
-void main_ui_create(void);
-
 /**********************
  *      MACROS
  **********************/
-
-#endif /*LV_USE_DEMO*/
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
-#endif // APP_UI_H
+#endif

@@ -1,5 +1,13 @@
-#ifndef APP_UI_H
-#define APP_UI_H
+/**
+ * @file lv_port_disp.h
+ *
+ */
+
+ /*Copy this file as "lv_port_disp.h" and set this value to "1" to enable content*/
+#if 1
+
+#ifndef LV_PORT_DISP_H
+#define LV_PORT_DISP_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -8,16 +16,7 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#define LV_CONF_INCLUDE_SIMPLE
-#ifdef LV_CONF_INCLUDE_SIMPLE
 #include "lvgl.h"
-#include "lv_ex_conf.h"
-#else
-#include "../../../lvgl/lvgl.h"
-#include "../../../lv_ex_conf.h"
-#endif
-
-#if LV_USE_DEMO
 
 /*********************
  *      DEFINES
@@ -31,19 +30,15 @@ extern "C" {
  * GLOBAL PROTOTYPES
  **********************/
 
-/**
- * Create a demo application
- */
-void main_ui_create(void);
-
 /**********************
  *      MACROS
  **********************/
-
-#endif /*LV_USE_DEMO*/
+void lv_port_disp_init(void);
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
-#endif // APP_UI_H
+#endif /*LV_PORT_DISP_TEMPL_H*/
+
+#endif /*Disable/Enable content*/
