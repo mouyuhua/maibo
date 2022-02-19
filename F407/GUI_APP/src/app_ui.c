@@ -6,12 +6,12 @@
 
 lv_coord_t height, width;
 
-lv_obj_t *page1;
+lv_obj_t* page1;
 lv_obj_t* times_cont;
 lv_obj_t* time_cont;
-lv_obj_t *time;
+lv_obj_t* time_HH,* time_MM,* time_point;
 lv_obj_t* date_cont;
-lv_obj_t *date;
+lv_obj_t* date_year,* date_month,* date_day,* date_point_1,* date_point_2;
 lv_obj_t* sta_cont;
 lv_obj_t* P_cont,* P_tag,* P_num;
 lv_obj_t* HBP_cont,* HBP_tag,* HBP_num;
@@ -19,7 +19,12 @@ lv_obj_t* LBP_cont,* LBP_tag,* LBP_num;
 
 lv_style_t page1_bg_style;
 lv_style_t page1_scrl_style;
+lv_style_t time_cont_style, day_cont_style;
 lv_style_t time_style, iconfont_style, iconfont_P;
+
+uint8_t* num_P="000",* num_HBP="000",* num_LBP="000";
+uint8_t* num_HH="21",* num_MM="21";
+uint8_t* num_year="2021",* num_month="05",* num_day="21";
 
 void main_ui_create(void)
 {
@@ -30,17 +35,29 @@ void main_ui_create(void)
     //样式创建
     lv_style_copy(&page1_bg_style, &lv_style_plain);
     lv_style_copy(&page1_scrl_style, &lv_style_plain);
+    lv_style_copy(&time_cont_style, &lv_style_plain);
+    lv_style_copy(&day_cont_style, &lv_style_plain);
     lv_style_copy(&time_style, &lv_style_plain);
     lv_style_copy(&iconfont_style, &lv_style_plain);
     lv_style_copy(&iconfont_P, &lv_style_plain);
 
     //基本ui创建
     page1 = lv_page_create(scr, NULL);
+
     times_cont = lv_cont_create(page1, NULL);
     time_cont = lv_cont_create(times_cont, NULL);
-    time = lv_label_create(time_cont, NULL);
+    time_HH = lv_label_create(time_cont, NULL);
+    time_point = lv_label_create(time_cont, time_HH);
+    time_MM = lv_label_create(time_cont,time_HH);
+
     date_cont = lv_cont_create(times_cont, time_cont);
-    date = lv_label_create(date_cont, time);
+    date_year = lv_label_create(date_cont, time_HH);
+    date_point_1 = lv_label_create(date_cont, time_HH);
+    date_month = lv_label_create(date_cont, time_HH);
+    date_point_2 = lv_label_create(date_cont, time_HH);
+    date_day = lv_label_create(date_cont, time_HH);
+
+
     sta_cont = lv_cont_create(page1, time_cont);
     P_cont = lv_cont_create(sta_cont, NULL);
     P_tag = lv_label_create(P_cont, NULL);
@@ -54,11 +71,6 @@ void main_ui_create(void)
 
     //主容器样式及布局设置
     lv_obj_set_size(page1, width, height);
-//    page1_bg_style.body.padding.bottom = 0;
-//    page1_bg_style.body.padding.top = 0;
-//    page1_bg_style.body.padding.left = 0;
-//    page1_bg_style.body.padding.right = 0;
-    //page1_bg_style.body.padding.inner = 5;
     lv_page_set_style(page1, LV_PAGE_STYLE_BG, &page1_bg_style);
     page1_scrl_style.body.padding.bottom = 0;
     page1_scrl_style.body.padding.top = 0;
@@ -70,17 +82,27 @@ void main_ui_create(void)
 
     //时间容器布局及样式设置
     // lv_obj_set_size(time, width*2/3, height*3/4);
-    time_style.text.font = &lv_font_roboto_22;
-    lv_label_set_text(time, "21:21");
-    lv_label_set_style(time, LV_LABEL_STYLE_MAIN, &time_style);
+    time_style.text.font = &lv_font_roboto_28;
+    lv_label_set_text(time_HH, num_HH);
+    lv_label_set_style(time_HH, LV_LABEL_STYLE_MAIN, &time_style);
+    lv_label_set_text(time_point, ":");
+    lv_label_set_style(time_point, LV_LABEL_STYLE_MAIN, &time_style);
+    lv_label_set_text(time_MM, num_MM);
+    lv_label_set_style(time_MM, LV_LABEL_STYLE_MAIN, &time_style);
     lv_obj_set_size(time_cont, width*2/3-4, height*3/4-10);
-    lv_cont_set_style(time_cont, LV_CONT_STYLE_MAIN, &page1_scrl_style);
-    lv_cont_set_layout(time_cont, LV_LAYOUT_CENTER);
+    time_cont_style.body.padding.left = (lv_obj_get_width(time_cont)-(lv_obj_get_width(time_HH)+lv_obj_get_width(time_point)+lv_obj_get_width(time_MM)))/2;
+    lv_cont_set_style(time_cont, LV_CONT_STYLE_MAIN, &time_cont_style);
+    lv_cont_set_layout(time_cont, LV_LAYOUT_ROW_M);
 
-    lv_label_set_text(date, "2021/05/21");
+    lv_label_set_text(date_year, num_year);
+    lv_label_set_text(date_point_1, "/");
+    lv_label_set_text(date_month, num_month);
+    lv_label_set_text(date_point_2, "/");
+    lv_label_set_text(date_day, num_day);
     lv_obj_set_size(date_cont, width*2/3-4, height/4+3);
-    lv_cont_set_style(date_cont, LV_CONT_STYLE_MAIN, &page1_scrl_style);
-    lv_cont_set_layout(date_cont, LV_LAYOUT_CENTER);
+    day_cont_style.body.padding.left = (lv_obj_get_width(date_cont)-(lv_obj_get_width(date_year)+lv_obj_get_width(date_month)*2+lv_obj_get_width(date_point_1)*2))/2;
+    lv_cont_set_style(date_cont, LV_CONT_STYLE_MAIN, &day_cont_style);
+    lv_cont_set_layout(date_cont, LV_LAYOUT_ROW_M);
 
     lv_cont_set_fit4(times_cont, LV_FIT_NONE, LV_FIT_TIGHT, LV_FIT_TIGHT, LV_FIT_TIGHT);
     lv_cont_set_style(times_cont, LV_CONT_STYLE_MAIN, &page1_scrl_style);
@@ -88,24 +110,24 @@ void main_ui_create(void)
 
     //状态表布局及样式设置
     iconfont_P.text.font = &iconfont_16;
-    lv_label_set_text(P_tag,P_TAG);
+    lv_label_set_text(P_tag,P_TAG":");
     lv_label_set_style(P_tag, LV_LABEL_STYLE_MAIN, &iconfont_P);
-    lv_label_set_text(P_num,":000");
+    lv_label_set_text(P_num, num_P);
     lv_cont_set_style(P_cont, LV_CONT_STYLE_MAIN, &page1_scrl_style);
     lv_obj_set_size(P_cont, width/3, height/3-1);
     lv_cont_set_layout(P_cont, LV_LAYOUT_ROW_M);
 
     iconfont_style.text.font = &iconfont_18;
-    lv_label_set_text(HBP_tag,HBP_TAG);
+    lv_label_set_text(HBP_tag,HBP_TAG":");
     lv_label_set_style(HBP_tag, LV_LABEL_STYLE_MAIN, &iconfont_style);
-    lv_label_set_text(HBP_num,":000");
+    lv_label_set_text(HBP_num, num_HBP);
     lv_cont_set_style(HBP_cont, LV_CONT_STYLE_MAIN, &page1_scrl_style);
     lv_obj_set_size(HBP_cont, width/3, height/3-1);
     lv_cont_set_layout(HBP_cont, LV_LAYOUT_ROW_M);
 
-    lv_label_set_text(LBP_tag,LBP_TAG);
+    lv_label_set_text(LBP_tag,LBP_TAG":");
     lv_label_set_style(LBP_tag, LV_LABEL_STYLE_MAIN, &iconfont_style);
-    lv_label_set_text(LBP_num,":000");
+    lv_label_set_text(LBP_num, num_LBP);
     lv_cont_set_style(LBP_cont, LV_CONT_STYLE_MAIN, &page1_scrl_style);
     lv_obj_set_size(LBP_cont, width/3, height/3-1);
     lv_cont_set_layout(LBP_cont, LV_LAYOUT_ROW_M);
