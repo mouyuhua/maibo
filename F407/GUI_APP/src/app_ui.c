@@ -1,4 +1,7 @@
 #include"app_ui.h"
+// #include"stdio.h"
+// #include"stdlib.h"
+// #include "math.h"
 
 #define P_TAG "\xEE\x99\xA3"
 #define LBP_TAG "\xEE\xA2\x9B"
@@ -22,12 +25,85 @@ lv_style_t page1_scrl_style;
 lv_style_t time_cont_style, day_cont_style;
 lv_style_t time_style, iconfont_style, iconfont_P;
 
-uint8_t* num_P="000",* num_HBP="000",* num_LBP="000";
-uint8_t* num_HH="21",* num_MM="21";
-uint8_t* num_year="2021",* num_month="05",* num_day="21";
+uint8_t num_P[]="***", num_HBP[]="***", num_LBP[]="***";
+uint8_t P=000, HBP=000, num=000;
+uint8_t num_HH[]="21", num_MM[]="21";
+uint8_t HH=21, MM=21, second=0;
+uint8_t num_year[]="2021", num_month[]="05", num_day[]="21";
+
+uint16_t pow(uint8_t num, uint8_t i)
+{
+    if(i==0)
+    {
+        return 1;
+    }
+    else
+    {
+        return num*pow(num, i-1);
+    }
+}
+
+void num2str(uint8_t num, uint8_t* str, uint8_t str_len)
+{
+    uint8_t num_len = num;
+    uint8_t len_dif;
+    uint8_t i;
+    if(!num_len)
+    {
+        num_len = 1;
+    }
+    else
+    {
+        for(i=0; num_len!=0; i++)
+        {
+            num_len/=10;
+        }
+        num_len = i;
+    }
+    if(str_len >= num_len)
+    {
+        len_dif = str_len-num_len;
+        if(len_dif)
+        {
+            for(i=0; i<len_dif; i++)
+            {
+                *(str+i)='0';
+            }
+        }
+        for(i=len_dif; i<str_len; i++, num_len--)
+        {
+            *(str+i) = '0'+ (num/pow(10, num_len-1))%10;
+        }
+        *(str+str_len) = '\0';
+    }
+}
+
+void time_refresh()
+{
+    second++;
+    if(second>=1)
+    {
+        second=0;
+        MM+=1;
+        if(MM>=60)
+        {
+            MM=0;
+            HH++;
+            if(HH>=24)
+            {
+                HH=0;
+            }
+            num2str(HH, num_HH, 2);
+            lv_label_set_text(time_HH, num_HH);
+        }
+        num2str(MM, num_MM, 2);
+        lv_label_set_text(time_MM, num_MM);
+    }
+}
 
 void main_ui_create(void)
 {
+    
     lv_obj_t* scr = lv_scr_act();
     height = lv_obj_get_height(scr);
     width = lv_obj_get_width(scr);
@@ -136,5 +212,7 @@ void main_ui_create(void)
     lv_cont_set_style(sta_cont, LV_CONT_STYLE_MAIN, &page1_scrl_style);
     lv_cont_set_layout(sta_cont, LV_LAYOUT_CENTER);
 
+
+    lv_task_create(time_refresh, 1000, LV_TASK_PRIO_HIGH, NULL);
 
 }
