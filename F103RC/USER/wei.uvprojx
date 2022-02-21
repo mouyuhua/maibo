@@ -362,7 +362,7 @@
             <uC99>1</uC99>
             <useXO>0</useXO>
             <VariousControls>
-              <MiscControls>--diag_suppress=68 --diag_suppress=111 --diag_suppress=550</MiscControls>
+              <MiscControls>--diag_suppress=68 --diag_suppress=111 --diag_suppress=550 --diag_suppress=167</MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
               <IncludePath>..\HARDWARE\LED;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\USER;..\STM32F10x_FWLib\inc;..\CORE;..\HARDWARE\TIMER;..\GUI_APP\inc;..\HARDWARE\OLED;..\LVGL_GUI;..\LVGL_GUI\driver;..\LVGL_GUI\src</IncludePath>
@@ -457,6 +457,11 @@
               <FileName>usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\SYSTEM\usart\usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>self_functions.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\OLED\self_functions.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -637,6 +642,11 @@
               <FileName>lv_font_fmt_txt.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\LVGL_GUI\src\lv_font\lv_font_fmt_txt.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_roboto_28.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\LVGL_GUI\src\lv_font\lv_font_roboto_28.c</FilePath>
             </File>
           </Files>
         </Group>
