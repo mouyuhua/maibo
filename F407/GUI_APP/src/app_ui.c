@@ -37,7 +37,7 @@ uint8_t month=5, day=21;
 void time_refresh(void)
 {
     second++;
-    if(second>=1)
+    if(second>=60)
     {
         second=0;
         MM+=1;
