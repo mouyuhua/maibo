@@ -1,5 +1,5 @@
-#ifndef APP_UI_H
-#define APP_UI_H
+#ifndef MENU_H
+#define MENU_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,8 +13,8 @@ extern "C" {
 #include "lvgl.h"
 #include "lv_ex_conf.h"
 #else
-#include "../../../lvgl/lvgl.h"
-#include "../../../lv_ex_conf.h"
+#include "lvgl.h"
+#include "../lv_ex_conf.h"
 #endif
 
 #if LV_USE_DEMO
@@ -26,7 +26,8 @@ extern "C" {
 /**********************
  *      TYPEDEFS
  **********************/
-
+enum change_command{forward, next};
+typedef enum change_command page_change_command;
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
@@ -34,9 +35,10 @@ extern "C" {
 /**
  * Create a demo application
  */
-void main_ui_create(void);
-
-void key_hander(void);
+void menu_ui_create(void);
+void del_menu_ui(void);
+void change_page(page_change_command command);
+void app_load(void);
 
 /**********************
  *      MACROS

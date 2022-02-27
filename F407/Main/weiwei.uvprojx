@@ -438,6 +438,11 @@
               <FileType>1</FileType>
               <FilePath>..\Hardware\Source\timer.c</FilePath>
             </File>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Hardware\Source\key.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -447,6 +452,11 @@
               <FileName>app_ui.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\GUI_APP\src\app_ui.c</FilePath>
+            </File>
+            <File>
+              <FileName>menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI_APP\src\menu.c</FilePath>
             </File>
           </Files>
         </Group>

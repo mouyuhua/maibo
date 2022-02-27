@@ -1,6 +1,9 @@
 #include"app_ui.h"
 #include"usart.h"
+#include"delay.h"
 #include"self_functions.h"
+#include"key.h"
+#include"menu.h"
 
 #define P_TAG "\xEE\x99\xA3"
 #define LBP_TAG "\xEE\xA2\x9B"
@@ -8,7 +11,7 @@
 
 lv_coord_t height, width;
 
-lv_task_t *task_time_refresh, *task_time_set, *task_sta_refresh;
+lv_task_t *task_time_refresh, *task_time_set, *task_sta_refresh, *key_task;
 
 lv_obj_t* scr, *page1;
 lv_obj_t* times_cont;
@@ -224,11 +227,6 @@ void luck_ui(void)
 
 }
 
-void menu_ui(void)
-{
-
-}
-
 void main_ui_create(void)
 {
     
@@ -237,6 +235,44 @@ void main_ui_create(void)
     width = lv_obj_get_width(scr);
     luck_ui();
     task_time_refresh = lv_task_create(time_refresh, 1000, LV_TASK_PRIO_HIGH, NULL);
-    task_sta_refresh = lv_task_create(sta_refresh, 600, LV_TASK_PRIO_HIGHEST, NULL);
+    //task_sta_refresh = lv_task_create(sta_refresh, 600, LV_TASK_PRIO_HIGHEST, NULL);
+	key_task = lv_task_create(key_hander, 1, LV_TASK_PRIO_HIGHEST, NULL);
 
+}
+
+
+void key_hander(void)
+{
+	static uint8_t pageflag=0;
+	if(KEY_Scan(0) == KEY1_PRES)
+	{
+		delay_ms(200);
+        app_load();
+	}
+
+    if(KEY_Scan(0) == KEY2_PRES)
+    {
+        change_page(forward);
+    }
+
+    if(KEY_Scan(0) == KEY0_PRES)
+    {
+        change_page(next);
+    }
+
+    if(KEY_Scan(0) == WKUP_PRES)
+    {
+        if(!pageflag)
+        {
+            menu_ui_create();
+		    lv_obj_set_hidden(page1, true);
+            pageflag = 1;
+        }
+        else
+        {
+            lv_obj_set_hidden(page1, false);
+            del_menu_ui();
+            pageflag = 0;
+        }
+    }
 }
