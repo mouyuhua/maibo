@@ -1,8 +1,17 @@
 #include"menu.h"
+#include"delay.h"
+
+#define SETTING "\xEE\x98\x80"
+#define HR_IMG "\xEE\xA2\x9A"
+#define BP_IMG "\xEE\x98\x94"
 
 #define LEFT_LMETER_BASE_VALUE 100
 #define RIGHT_LMETER_BASE_VALUE 0
 #define MAXPAGE 3
+
+extern lv_indev_t * indev_keypad;
+extern lv_obj_t *page1;
+extern lv_group_t *ui_group;
 
 lv_obj_t *menu_cont;
 lv_obj_t *menu_page, *lmeter_tag_left_cont, *lmeter_tag_right_cont, *lmeter_tag_left, *lmeter_tag_right;
@@ -11,33 +20,27 @@ lv_obj_t *HR_img, *HR_title;
 lv_obj_t *BP_img, *BP_title;
 lv_obj_t *setting_img, *setting_title;
 
-lv_style_t lmeter_tag_style;
+lv_style_t lmeter_tag_style, img_font_style;
 
-static uint8_t load_value = 0;
-
-void del_menu_ui(void)
-{
-    lv_obj_del_async(menu_cont);
-}
+static int8_t load_value = 0;
+static int8_t page_num = 0;
 
 void change_page(page_change_command command)
 {
-    static uint8_t page_num = 0;
     if(command == next)
     {
+        page_num++;
+        if(page_num >= MAXPAGE) page_num = 0;
         switch (page_num)
         {
         case 0:
-            lv_page_focus(menu_page, HR_cont, LV_ANIM_OFF);
-            page_num++;
+            lv_page_focus(menu_page, HR_cont, LV_ANIM_ON);
             break;
         case 1:
-            lv_page_focus(menu_page, BP_cont, LV_ANIM_OFF);
-            page_num++;
+            lv_page_focus(menu_page, BP_cont, LV_ANIM_ON);
             break;
         case 2:
-            lv_page_focus(menu_cont, setting_cont, LV_ANIM_OFF);
-            page_num=0;
+            lv_page_focus(menu_page, setting_cont, LV_ANIM_ON);
             break;
         default:
             break;
@@ -45,19 +48,18 @@ void change_page(page_change_command command)
     }
     else if(command == forward)
     {
+        page_num--;
+        if(page_num < 0) page_num = MAXPAGE-1;
         switch (page_num)
         {
         case 0:
             lv_page_focus(menu_page, HR_cont, LV_ANIM_ON);
-            page_num = MAXPAGE-1;
             break;
         case 1:
             lv_page_focus(menu_page, BP_cont, LV_ANIM_ON);
-            page_num--;
             break;
         case 2:
-            lv_page_focus(menu_cont, setting_cont, LV_ANIM_ON);
-            page_num--;
+            lv_page_focus(menu_page, setting_cont, LV_ANIM_ON);
             break;
         default:
             break;
@@ -65,22 +67,48 @@ void change_page(page_change_command command)
     }
 }
 
-void app_load(void)
+static void toluck_callback(struct _lv_obj_t *obj, lv_event_t event)
 {
-    load_value += 10;
-    lv_lmeter_set_value(lmeter_tag_left, LEFT_LMETER_BASE_VALUE+load_value);
-    lv_lmeter_set_value(lmeter_tag_right, RIGHT_LMETER_BASE_VALUE+load_value);
-    if(load_value>=100)
+    if(event == LV_EVENT_KEY)
     {
-        load_value = 0;
+        const uint8_t *key = lv_event_get_data();
+        if(*key == LV_KEY_UP)
+        {
+            lv_group_remove_obj(menu_page);
+            lv_group_add_obj(ui_group, page1);
+            lv_obj_del_async(menu_cont);
+        }
+        if(*key == LV_KEY_LEFT)
+        {
+            change_page(forward);
+        }
+        else if(*key == LV_KEY_RIGHT)
+        {
+            change_page(next);
+        }
+        else if(*key == LV_KEY_DOWN)
+        {
+            load_value += 20;
+            lv_lmeter_set_value(lmeter_tag_left, LEFT_LMETER_BASE_VALUE+load_value);
+            lv_lmeter_set_value(lmeter_tag_right, RIGHT_LMETER_BASE_VALUE+load_value);
+            if(load_value>=100)
+            {
+                load_value = -20;
+            }
+        }
     }
 }
 
 void menu_ui_create(void)
 {
-    lv_style_copy(&lmeter_tag_style, &lv_style_plain_color);
+    page_num = 0;
+
+    lv_style_copy(&lmeter_tag_style, &lv_style_plain);
+    lv_style_copy(&img_font_style, &lv_style_plain);
 
     menu_cont = lv_cont_create(lv_scr_act(), NULL);
+    // lv_group_add_obj(ui_group, menu_cont);
+    lv_obj_set_event_cb(menu_cont, toluck_callback);
     lv_obj_set_size(menu_cont, LV_HOR_RES_MAX, LV_VER_RES_MAX);
 
     lmeter_tag_style.body.main_color=LV_COLOR_BLACK;
@@ -91,6 +119,8 @@ void menu_ui_create(void)
     lmeter_tag_left_cont = lv_cont_create(menu_cont, NULL);
     lv_obj_set_size(lmeter_tag_left_cont, LV_HOR_RES_MAX/4, LV_VER_RES_MAX);
     menu_page = lv_page_create(menu_cont, NULL);
+    lv_group_add_obj(ui_group, menu_page);
+    lv_obj_set_event_cb(menu_page, toluck_callback);
     lv_page_set_sb_mode(menu_page, LV_SB_MODE_HIDE);
     lv_obj_set_size(menu_page, LV_HOR_RES_MAX/2, LV_VER_RES_MAX);
     lmeter_tag_right_cont = lv_cont_create(menu_cont, lmeter_tag_left_cont);
@@ -115,32 +145,34 @@ void menu_ui_create(void)
     HR_cont = lv_cont_create(menu_page, NULL);
     HR_img = lv_label_create(HR_cont, NULL);
     HR_title = lv_label_create(HR_cont, HR_img);
-    lv_label_set_text(HR_img, "HR_IMG");
-    lv_label_set_text(HR_title, "HR_TITLE");
+    img_font_style.text.font = &iconfont_18;
+    lv_label_set_text(HR_img, HR_IMG);
+    lv_label_set_style(HR_img, LV_LABEL_STYLE_MAIN, &img_font_style);
+    lv_label_set_text(HR_title, "HR");
     lv_obj_set_size(HR_cont, lv_page_get_fit_width(menu_page), lv_page_get_fit_height(menu_page));
     lv_cont_set_layout(HR_cont, LV_LAYOUT_CENTER);
 
     BP_cont = lv_cont_create(menu_page, NULL);
     BP_img = lv_label_create(BP_cont, HR_img);
     BP_title = lv_label_create(BP_cont, HR_title);
-    lv_label_set_text(BP_img, "BP_IMG");
-    lv_label_set_text(BP_title, "BP_TITLE");
+    lv_label_set_text(BP_img, BP_IMG);
+    lv_label_set_style(BP_img, LV_LABEL_STYLE_MAIN, &img_font_style);
+    lv_label_set_text(BP_title, "BP");
     lv_obj_set_size(BP_cont, lv_page_get_fit_width(menu_page), lv_page_get_fit_height(menu_page));
     lv_cont_set_layout(BP_cont, LV_LAYOUT_CENTER);
 
     setting_cont = lv_cont_create(menu_page, BP_cont);
     setting_img = lv_label_create(setting_cont, BP_img);
     setting_title = lv_label_create(setting_cont, BP_title);
-    lv_label_set_text(setting_img, "SETTING_IMG");
-    lv_label_set_text(setting_title, "SETTING_TITLE");
+    lv_label_set_text(setting_img, SETTING);
+    lv_label_set_style(setting_img, LV_LABEL_STYLE_MAIN, &img_font_style);
+    lv_label_set_text(setting_title, "SETTING");
     lv_obj_set_size(setting_cont, lv_page_get_fit_width(menu_page), lv_page_get_fit_height(menu_page));
     lv_cont_set_layout(setting_cont, LV_LAYOUT_CENTER);
 
     lv_page_set_scrl_layout(menu_page, LV_LAYOUT_ROW_M);
 
     lv_cont_set_layout(menu_cont, LV_LAYOUT_ROW_M);
-
-    //lv_task_create(del_menu_ui, 3000, LV_TASK_PRIO_HIGHEST, NULL);
 
 }
 

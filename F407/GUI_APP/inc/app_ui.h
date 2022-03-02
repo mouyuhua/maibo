@@ -36,8 +36,6 @@ extern "C" {
  */
 void main_ui_create(void);
 
-void key_hander(void);
-
 /**********************
  *      MACROS
  **********************/

@@ -923,6 +923,11 @@
               <FileType>1</FileType>
               <FilePath>..\LVGL_GUI\driver\lv_port_disp.c</FilePath>
             </File>
+            <File>
+              <FileName>lv_port_indev.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\LVGL_GUI\driver\lv_port_indev.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

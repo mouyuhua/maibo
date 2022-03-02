@@ -2,16 +2,18 @@
 #include"usart.h"
 #include"delay.h"
 #include"self_functions.h"
-#include"key.h"
 #include"menu.h"
 
 #define P_TAG "\xEE\x99\xA3"
 #define LBP_TAG "\xEE\xA2\x9B"
 #define HBP_TAG "\xEE\x98\xA8"
 
+extern lv_indev_t * indev_keypad;
+lv_group_t *ui_group;
+
 lv_coord_t height, width;
 
-lv_task_t *task_time_refresh, *task_time_set, *task_sta_refresh, *key_task;
+lv_task_t *task_time_refresh, *task_time_set, *task_sta_refresh;
 
 lv_obj_t* scr, *page1;
 lv_obj_t* times_cont;
@@ -36,6 +38,17 @@ uint8_t HH=14, MM=40, second=0;
 uint8_t num_year[]="2021", num_month[]="05", num_day[]="21";
 uint16_t year=2021;
 uint8_t month=5, day=21;
+
+void my_style_mod(lv_group_t * group, lv_style_t * style)
+{
+    style->body.border.opa   = LV_OPA_0;
+    style->body.border.color = LV_COLOR_ORANGE;
+    style->body.border.width = LV_DPI / 20;
+
+    style->body.main_color   = lv_color_mix(style->body.main_color, LV_COLOR_ORANGE, LV_OPA_70);
+    style->body.grad_color   = lv_color_mix(style->body.grad_color, LV_COLOR_ORANGE, LV_OPA_70);
+    style->body.shadow.color = lv_color_mix(style->body.shadow.color, LV_COLOR_ORANGE, LV_OPA_60);
+}
 
 void time_refresh(void)
 {
@@ -111,6 +124,19 @@ void sta_refresh(void)
     }
 }
 
+static void tomenu_callback(struct _lv_obj_t *obj, lv_event_t event)
+{
+    if(event == LV_EVENT_KEY)
+    {
+        const uint8_t *key = lv_event_get_data();
+        if(*key == LV_KEY_UP)
+        {
+            menu_ui_create();
+            lv_group_remove_obj(page1);
+        }
+    }
+}
+
 void luck_ui(void)
 {
     //样式创建
@@ -123,7 +149,12 @@ void luck_ui(void)
     lv_style_copy(&iconfont_P, &lv_style_plain);
 
     //基本ui创建
+    ui_group = lv_group_create();
+    lv_indev_set_group(indev_keypad, ui_group);
     page1 = lv_page_create(scr, NULL);
+    lv_group_add_obj(ui_group, page1);
+    lv_group_set_style_mod_cb(ui_group, my_style_mod);
+    lv_obj_set_event_cb(page1, tomenu_callback);
 
     times_cont = lv_cont_create(page1, NULL);
     time_cont = lv_cont_create(times_cont, NULL);
@@ -235,44 +266,7 @@ void main_ui_create(void)
     width = lv_obj_get_width(scr);
     luck_ui();
     task_time_refresh = lv_task_create(time_refresh, 1000, LV_TASK_PRIO_HIGH, NULL);
-    //task_sta_refresh = lv_task_create(sta_refresh, 600, LV_TASK_PRIO_HIGHEST, NULL);
-	key_task = lv_task_create(key_hander, 1, LV_TASK_PRIO_HIGHEST, NULL);
+    //task_sta_refresh = lv_task_create(sta_refresh, 500, LV_TASK_PRIO_HIGHEST, NULL);
 
 }
 
-
-void key_hander(void)
-{
-	static uint8_t pageflag=0;
-	if(KEY_Scan(0) == KEY1_PRES)
-	{
-		delay_ms(200);
-        app_load();
-	}
-
-    if(KEY_Scan(0) == KEY2_PRES)
-    {
-        change_page(forward);
-    }
-
-    if(KEY_Scan(0) == KEY0_PRES)
-    {
-        change_page(next);
-    }
-
-    if(KEY_Scan(0) == WKUP_PRES)
-    {
-        if(!pageflag)
-        {
-            menu_ui_create();
-		    lv_obj_set_hidden(page1, true);
-            pageflag = 1;
-        }
-        else
-        {
-            lv_obj_set_hidden(page1, false);
-            del_menu_ui();
-            pageflag = 0;
-        }
-    }
-}

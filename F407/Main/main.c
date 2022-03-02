@@ -1,32 +1,33 @@
 #include "lvgl.h"
 #include "lv_port_disp.h"
+#include "lv_port_indev.h"
 #include "sys.h"
 #include "delay.h"
 #include "timer.h"
 #include "oled.h"
 #include "usart.h"
-#include "key.h"
 #include "app_ui.h"
 
 int main(void)
 {
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//ÉèÖÃÏµÍ³ÖÐ¶ÏÓÅÏÈ¼¶·Ö×é2
-	KEY_Init();
-	delay_init(168);  //³õÊ¼»¯ÑÓÊ±º¯Êý
-	TIM3_Int_Init(10-1,8400-1); //³õÊ¼»¯TIM3£¬ 1ms
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½È¼ï¿½ï¿½ï¿½ï¿½ï¿½2
+	// KEY_Init();
+	delay_init(168);  //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
+	TIM3_Int_Init(10-1,8400-1); //ï¿½ï¿½Ê¼ï¿½ï¿½TIM3ï¿½ï¿½ 1ms
 	uart_init(9600);
 	
 	OLED_Init();
 	
 	lv_init();
 	lv_port_disp_init();
+	lv_port_indev_init();
 	
 	main_ui_create();
 	
 	while(1)
 	{
 		lv_task_handler();
-		key_hander();
+		//key_hander();
 	}
 	
 }

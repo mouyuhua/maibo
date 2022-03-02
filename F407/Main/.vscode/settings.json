@@ -1,5 +1,9 @@
 {
     "files.associations": {
-        "menu.h": "c"
+        "menu.h": "c",
+        "lv_port_indev.h": "c",
+        "key.h": "c",
+        "app_ui.h": "c",
+        "delay.h": "c"
     }
 }

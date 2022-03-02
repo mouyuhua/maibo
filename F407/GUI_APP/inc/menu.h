@@ -36,9 +36,6 @@ typedef enum change_command page_change_command;
  * Create a demo application
  */
 void menu_ui_create(void);
-void del_menu_ui(void);
-void change_page(page_change_command command);
-void app_load(void);
 
 /**********************
  *      MACROS
