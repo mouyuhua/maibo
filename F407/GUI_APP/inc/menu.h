@@ -8,7 +8,6 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#define LV_CONF_INCLUDE_SIMPLE
 #ifdef LV_CONF_INCLUDE_SIMPLE
 #include "lvgl.h"
 #include "lv_ex_conf.h"

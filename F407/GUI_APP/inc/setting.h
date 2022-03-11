@@ -34,7 +34,12 @@ extern "C" {
 /**
  * Create a demo application
  */
+void main_setting_create(void);
+
 void setting_create(void);
+void time_setting(void);
+void data_setting(void);
+void sys_info(void);
 
 /**********************
  *      MACROS

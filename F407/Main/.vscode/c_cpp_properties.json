@@ -27,6 +27,7 @@
             "defines": [
                 "STM32F40_41xxx",
                 "USE_STDPERIPH_DRIVER",
+                "LV_CONF_INCLUDE_SIMPLE",
                 "__CC_ARM",
                 "__arm__",
                 "__align(x)=",

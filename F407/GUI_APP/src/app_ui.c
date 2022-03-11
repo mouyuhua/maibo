@@ -139,7 +139,7 @@ static void tomenu_callback(struct _lv_obj_t *obj, lv_event_t event)
 
 void luck_ui(void)
 {
-    //ÑùÊ½´´½¨
+    //æ ·å¼åˆ›å»º
     lv_style_copy(&page1_bg_style, &lv_style_plain);
     lv_style_copy(&page1_scrl_style, &lv_style_plain);
     lv_style_copy(&time_cont_style, &lv_style_plain);
@@ -148,7 +148,7 @@ void luck_ui(void)
     lv_style_copy(&iconfont_style, &lv_style_plain);
     lv_style_copy(&iconfont_P, &lv_style_plain);
 
-    //»ù±¾ui´´½¨
+    //åŸºæœ¬uiåˆ›å»º
     ui_group = lv_group_create();
     lv_indev_set_group(indev_keypad, ui_group);
     page1 = lv_page_create(scr, NULL);
@@ -181,7 +181,7 @@ void luck_ui(void)
     LBP_tag = lv_label_create(LBP_cont, P_tag);
     LBP_num = lv_label_create(LBP_cont, P_tag);
 
-    //Ö÷ÈİÆ÷ÑùÊ½¼°²¼¾ÖÉèÖÃ
+    //ä¸»å®¹å™¨æ ·å¼åŠå¸ƒå±€è®¾ç½®
     lv_obj_set_size(page1, width, height);
     lv_page_set_style(page1, LV_PAGE_STYLE_BG, &page1_bg_style);
     page1_scrl_style.body.padding.bottom = 0;
@@ -192,7 +192,7 @@ void luck_ui(void)
     lv_page_set_style(page1, LV_PAGE_STYLE_SCRL, &page1_scrl_style);
     lv_page_set_scrl_layout(page1, LV_LAYOUT_ROW_M);
 
-    //Ê±¼äÈİÆ÷²¼¾Ö¼°ÑùÊ½ÉèÖÃ
+    //æ—¶é—´å®¹å™¨å¸ƒå±€åŠæ ·å¼è®¾ç½®
     // lv_obj_set_size(time, width*2/3, height*3/4);
     time_style.text.font = &lv_font_roboto_28;
 	num2str(HH, num_HH, 2);
@@ -225,7 +225,7 @@ void luck_ui(void)
     lv_cont_set_style(times_cont, LV_CONT_STYLE_MAIN, &page1_scrl_style);
     lv_cont_set_layout(times_cont, LV_LAYOUT_CENTER);
 
-    //×´Ì¬±í²¼¾Ö¼°ÑùÊ½ÉèÖÃ
+    //çŠ¶æ€è¡¨å¸ƒå±€åŠæ ·å¼è®¾ç½®
     iconfont_P.text.font = &iconfont_16;
     lv_label_set_text(P_tag,P_TAG":");
     lv_label_set_style(P_tag, LV_LABEL_STYLE_MAIN, &iconfont_P);

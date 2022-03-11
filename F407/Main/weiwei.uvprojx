@@ -47,13 +47,13 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>..\Output\</OutputDirectory>
-          <OutputName>weiwei</OutputName>
+          <OutputName>xui</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
           <DebugInformation>0</DebugInformation>
           <BrowseInformation>0</BrowseInformation>
-          <ListingPath>..\</ListingPath>
+          <ListingPath>..\Output\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -78,9 +78,9 @@
             <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
-            <RunUserProg1>0</RunUserProg1>
+            <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name></UserProg1Name>
+            <UserProg1Name>D:\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin --output ../Output/xui.bin ../Output/xui.axf</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
@@ -363,7 +363,7 @@
             <useXO>0</useXO>
             <VariousControls>
               <MiscControls>--diag_suppress=68 --diag_suppress=111 --diag_suppress=550</MiscControls>
-              <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER</Define>
+              <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER,LV_CONF_INCLUDE_SIMPLE</Define>
               <Undefine></Undefine>
               <IncludePath>..\Core;..\Hardware\Include;..\System\Include;..\GUI_APP\inc;..\LVGL_GUI;..\LVGL_GUI\src;..\LVGL_GUI\driver</IncludePath>
             </VariousControls>
@@ -457,6 +457,26 @@
               <FileName>menu.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\GUI_APP\src\menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>HR_chart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI_APP\src\HR_chart.c</FilePath>
+            </File>
+            <File>
+              <FileName>BP_chart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI_APP\src\BP_chart.c</FilePath>
+            </File>
+            <File>
+              <FileName>project_link.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI_APP\src\project_link.c</FilePath>
+            </File>
+            <File>
+              <FileName>setting.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI_APP\src\setting.c</FilePath>
             </File>
           </Files>
         </Group>

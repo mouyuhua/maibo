@@ -4,6 +4,9 @@
         "lv_port_indev.h": "c",
         "key.h": "c",
         "app_ui.h": "c",
-        "delay.h": "c"
+        "delay.h": "c",
+        "hr_chart.h": "c",
+        "bp_chart.h": "c",
+        "setting.h": "c"
     }
 }
